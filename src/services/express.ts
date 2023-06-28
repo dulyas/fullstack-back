@@ -15,7 +15,7 @@ const app = express()
 
 app.use(cors({
   credentials: true,
-  origin: config.client_url
+  origin: '*'
 }))
 app.use(express.text({ type: 'text/*' }));
 app.use(express.urlencoded({ extended: true }));
