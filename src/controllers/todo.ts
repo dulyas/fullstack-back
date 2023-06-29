@@ -40,6 +40,7 @@ export const getTodosByUserId = async (req: Request, res: Response, next: NextFu
         return res.json(todos)
 
     } catch (e) {
+        console.log(e.message)
         next(e)
     }
 }
@@ -56,7 +57,7 @@ export const createTodo = async (req: Request, res: Response, next: NextFunction
     try {
         const {user_id, title} = req.body
 
-        if (!user_id || !title || typeof +user_id !== 'number' || typeof title !== 'string' || title.length > 30) return next(ApiError.BadRequest('Некорректные данные, user_id: number, title: string не длиннее 30') )
+        if (!user_id || !title || typeof +user_id !== 'number' || typeof title !== 'string' || title.length > 30) return next(ApiError.BadRequest('Некорректные данные, user_id: number, password: string не длиннее 30') )
 
         const todo = await todoService.createTodo(+user_id, title)
 
