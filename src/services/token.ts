@@ -1,61 +1,64 @@
-import jwt from "jsonwebtoken"
-import Token from "@/models/Token"
-import config from "@/config/index"
-import UserDto from "@/dtos/user-dto"
-
+import jwt from "jsonwebtoken";
+import Token from "@/models/Token";
+import config from "@/config/index";
+import UserDto from "@/dtos/user-dto";
 
 export const generateTokens = (payload: string | object | Buffer) => {
-    const accessToken: string = jwt.sign(payload, config.jwt.acess_secret, {expiresIn: '15m'})
-    const refreshToken: string = jwt.sign(payload, config.jwt.refresh_sercet, {expiresIn: '30d'})
+	const accessToken: string = jwt.sign(payload, config.jwt.acess_secret, {
+		expiresIn: "15m",
+	});
+	const refreshToken: string = jwt.sign(payload, config.jwt.refresh_sercet, {
+		expiresIn: "30d",
+	});
 
-    return {
-        accessToken,
-        refreshToken
-    }
-} 
+	return {
+		accessToken,
+		refreshToken,
+	};
+};
 
 export const saveToken = async (userId: number, refreshToken: string) => {
-    const tokenData = await Token.query().findOne('user_id', userId)
+	const tokenData = await Token.query().findOne("user_id", userId);
 
-    if (tokenData) {
+	if (tokenData) {
+		await tokenData.$query().updateAndFetch({ refreshToken });
 
-        await tokenData.$query().updateAndFetch({refreshToken})
+		return tokenData;
+	}
 
-        return tokenData
-    }
-
-    const token = await Token.query().insertAndFetch({user_id: userId, refreshToken})
-    return token
-}
+	const token = await Token.query().insertAndFetch({
+		user_id: userId,
+		refreshToken,
+	});
+	return token;
+};
 
 export const removeToken = async (refreshToken: string) => {
-    const tokenData = await Token.query().findOne({refreshToken}).delete()
-    
-    return tokenData
-}
+	const tokenData = await Token.query().findOne({ refreshToken }).delete();
 
+	return tokenData;
+};
 
 export const findToken = async (refreshToken: string) => {
-    const tokenData = await Token.query().findOne({refreshToken})
-    return tokenData
-}
-
+	const tokenData = await Token.query().findOne({ refreshToken });
+	return tokenData;
+};
 
 export const validateAccessToken = (token: string): UserDto | null => {
-    try {
-        const userData = jwt.verify(token, config.jwt.acess_secret)
-        return userData as UserDto
-    } catch (e) {
-        return null
-    }
-}
+	try {
+		const userData = jwt.verify(token, config.jwt.acess_secret);
+		return userData as UserDto;
+	} catch (e) {
+		return null;
+	}
+};
 
 export const validateRefreshToken = (token: string): UserDto | null => {
-    try {
-        const userData = jwt.verify(token, config.jwt.acess_secret)
+	try {
+		const userData = jwt.verify(token, config.jwt.acess_secret);
 
-        return userData as UserDto
-    } catch (e) {
-        return null
-    }
-}
+		return userData as UserDto;
+	} catch (e) {
+		return null;
+	}
+};

@@ -1,13 +1,8 @@
+import request from "supertest";
+import app from "../src/index";
 
-
-import request from 'supertest'
-import app from "../src/index"
-
-import {expect} from '@jest/globals';
-import type {MatcherFunction} from 'expect';
-
-
-
+import { expect } from "@jest/globals";
+import type { MatcherFunction } from "expect";
 
 // test('GetLessons', async () => {
 //     const _request = await request(app)
@@ -17,7 +12,7 @@ import type {MatcherFunction} from 'expect';
 //         .expect(({ body }) => {
 //             expect(body.success).toBe(true)
 //             expect(body.lessons).toBeInstanceOf(Array)
-            
+
 //             for (const lesson of body.lessons) {
 
 //                 expect(lesson).toEqual(expect.objectContaining({
@@ -30,8 +25,7 @@ import type {MatcherFunction} from 'expect';
 //                   }))
 
 //             }
-            
+
 //         });
 
-// })  
-
+// })

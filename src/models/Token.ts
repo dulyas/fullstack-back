@@ -1,16 +1,15 @@
 import { Model } from "objection";
 
-
 export default class Token extends Model {
-    id!: number
-    user_id!: number
-    refreshToken!: string
+	id!: number;
+	user_id!: number;
+	refreshToken!: string;
 
-    static get tableName() {
-        return 'tokens'
-    }
+	static get tableName() {
+		return "tokens";
+	}
 
-    // static get relationMappings() {
+	// static get relationMappings() {
 	// 	return {
 	// 		teachers: {
 	// 			relation: Model.ManyToManyRelation,
